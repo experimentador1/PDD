@@ -59,11 +59,38 @@ Abrir http://localhost:5173 y cargar el archivo Excel.
 
 Columnas requeridas: `FOLIO`, `FORO`, `EXPONE`, `TITULO`, `PROBLEMATICA`, `PROPUESTA`, `CLAVE_TEMA`, `TEMA`, `CLAVE_AREA`, `CLASIFICACION`, `AREA`, `CLAVE_TIPO`, `ORD`, `TIPO`, `PONENCIA`, `PONENTES`, `CARGO`, `CORREOS`, `TELEFONOS`, `PONENCIA_1`, `DEPENDENCIA`, `OTRA`.
 
-## Despliegue en Render.com
+## Despliegue en Vercel (frontend + backend)
 
-- **Web Service (backend)**: `uvicorn app.main:app --host 0.0.0.0 --port $PORT`
-- **Static Site (frontend)**: `npm run build` → carpeta `dist`
-- Variable de entorno frontend: `VITE_API_URL=https://tu-api.onrender.com`
+Todo el proyecto corre en **Vercel**: el frontend React como sitio estático y el backend FastAPI como **función serverless Python** en `/api`.
+
+### Configuración en Vercel
+
+1. Importa el repo [experimentador1/PDD](https://github.com/experimentador1/PDD).
+2. **Root Directory:** deja vacío (raíz del repo, **no** `frontend`).
+3. Vercel detectará `vercel.json` en la raíz con:
+   - Build del frontend → `frontend/dist`
+   - API Python → `api/index.py` (FastAPI + pandas)
+4. Despliega. No necesitas variables de entorno adicionales.
+
+### Estructura relevante
+
+```
+PDD/
+├── api/index.py          ← entrada serverless (FastAPI)
+├── backend/app/          ← lógica de analítica
+├── requirements.txt      ← dependencias Python para Vercel
+├── vercel.json           ← configuración de despliegue
+└── frontend/             ← React + D3.js
+```
+
+### Verificación
+
+- API: `https://tu-dominio.vercel.app/health` → `{"status":"ok"}`
+- App: carga el Excel en tu dominio Vercel → debe mostrar el dashboard.
+
+### Desarrollo local
+
+Sigue usando dos terminales (backend + frontend) con los scripts `start-backend.sh` y `start-frontend.sh`.
 
 ## Referencias
 
