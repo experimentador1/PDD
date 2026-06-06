@@ -276,6 +276,7 @@ export default function App() {
           <KnowledgeGraphView
             data={graphData}
             fileName={fileName}
+            analytics={data}
             onBack={goToDashboard}
           />
         )}

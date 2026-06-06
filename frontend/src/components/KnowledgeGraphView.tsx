@@ -1,10 +1,13 @@
 import { useMemo, useState } from "react";
 import { KnowledgeGraph } from "../charts/KnowledgeGraph";
-import type { GraphNode, KnowledgeGraphResponse } from "../types";
+import { AiCauseEffectPanel } from "./AiCauseEffectPanel";
+import { AiInterpretationPanel } from "./AiInterpretationPanel";
+import type { AnalyticsResponse, GraphNode, KnowledgeGraphResponse } from "../types";
 
 interface Props {
   data: KnowledgeGraphResponse;
   fileName: string;
+  analytics?: AnalyticsResponse | null;
   onBack: () => void;
 }
 
@@ -19,7 +22,7 @@ const TYPE_LABELS: Record<string, string> = {
   indicador: "Indicadores",
 };
 
-export function KnowledgeGraphView({ data, fileName, onBack }: Props) {
+export function KnowledgeGraphView({ data, fileName, analytics, onBack }: Props) {
   const allTypes = useMemo(() => [...new Set(data.nodes.map((n) => n.type))], [data.nodes]);
   const [activeTypes, setActiveTypes] = useState<Set<string>>(
     () => new Set(allTypes)
@@ -77,6 +80,10 @@ export function KnowledgeGraphView({ data, fileName, onBack }: Props) {
           ))}
         </div>
       </div>
+
+      <AiInterpretationPanel graph={data} analytics={analytics} focusNode={selectedNode} />
+
+      <AiCauseEffectPanel graph={data} analytics={analytics} focusNode={selectedNode} />
 
       <div className="grid gap-5 lg:grid-cols-[240px_1fr_280px]">
         {/* Panel filtros */}

@@ -88,6 +88,17 @@ PDD/
 - API: `https://tu-dominio.vercel.app/health` → `{"status":"ok"}`
 - App: carga el Excel en tu dominio Vercel → debe mostrar el dashboard.
 
+### Interpretación IA (OpenAI)
+
+En **Mapa de conocimiento**, el panel «Interpretación IA» analiza la alineación propuestas ↔ indicadores PDD.
+
+| Variable | Dónde |
+|----------|--------|
+| `OPENAI_API_KEY` | Vercel → Settings → Environment Variables |
+| `OPENAI_MODEL` | Opcional (`gpt-4o` por defecto) |
+
+Local: copia `backend/.env.example` a `backend/.env` y agrega tu key.
+
 ### Desarrollo local
 
 Sigue usando dos terminales (backend + frontend) con los scripts `start-backend.sh` y `start-frontend.sh`.

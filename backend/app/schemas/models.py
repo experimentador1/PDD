@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Union
+from typing import Any, Optional, Union
 
 from pydantic import BaseModel, Field
 
@@ -78,6 +78,85 @@ class KnowledgeGraphResponse(BaseModel):
     links: list[GraphLink]
     stats: dict[str, Any]
     legend: list[dict[str, str]]
+
+
+class AiInterpretationRequest(BaseModel):
+    graph: KnowledgeGraphResponse
+    analytics: Optional[AnalyticsResponse] = None
+    focus_node_id: Optional[str] = None
+
+
+class OportunidadArea(BaseModel):
+    nombre: str
+    descripcion: str
+    evidencia: str
+    indicadores_relacionados: list[str] = Field(default_factory=list)
+
+
+class IssueTreeRama(BaseModel):
+    pregunta: str
+    hallazgos: list[str] = Field(default_factory=list)
+
+
+class PrioridadIniciativa(BaseModel):
+    iniciativa: str
+    impacto: str
+    esfuerzo: str
+    cuadrante: str
+    horizonte: str
+    rationale: str
+
+
+class AiInterpretationResponse(BaseModel):
+    resumen_ejecutivo: str
+    analisis_alineacion: str
+    puntos_clave_ejecutivos: list[str] = Field(default_factory=list)
+    areas_oportunidad: list[OportunidadArea] = Field(default_factory=list)
+    arbol_issues: list[IssueTreeRama] = Field(default_factory=list)
+    analisis_brechas: str = ""
+    matriz_priorizacion: list[PrioridadIniciativa] = Field(default_factory=list)
+    hallazgos_indicadores: list[str]
+    brechas_y_riesgos: list[str]
+    recomendaciones: list[str]
+    conexiones_clave: list[str]
+    marcos_consultoria: list[str] = Field(default_factory=list)
+    modelo: str = ""
+    generado_en: str = ""
+
+
+class CadenaCausal(BaseModel):
+    causa: str
+    mecanismo: str
+    efecto: str
+    indicador_pdd: str
+
+
+class CincoPorques(BaseModel):
+    brecha_inicial: str
+    niveles: list[str] = Field(default_factory=list)
+    causa_raiz: str
+    accion_sugerida: str
+
+
+class AreaCausaEfecto(BaseModel):
+    nombre: str
+    problema: str
+    brecha: str
+    cadena_causal: CadenaCausal
+    cinco_porques: CincoPorques
+
+
+class AiCauseEffectRequest(BaseModel):
+    graph: KnowledgeGraphResponse
+    analytics: Optional[AnalyticsResponse] = None
+    focus_node_id: Optional[str] = None
+
+
+class AiCauseEffectResponse(BaseModel):
+    resumen_causa_efecto: str
+    areas_analisis: list[AreaCausaEfecto] = Field(default_factory=list)
+    modelo: str = ""
+    generado_en: str = ""
 
 
 class PonenciaDetail(BaseModel):
